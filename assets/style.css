@@ -1,0 +1,620 @@
+/*=============== FONTS ===============*/
+@font-face {
+    font-family: 'dotmatrixtworegular';
+    src: url('fonts/adotmatrix_two_regular-webfont.woff2') format('woff2'),
+         url('fonts/dotmatrix_two_regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+/*=============== VARIABLES CSS ===============*/
+:root {
+  --header-height: 3.5rem;
+
+  /*========== Colors ==========*/
+  /*Color mode HSL(hue, saturation, lightness)*/
+  --first-color: hsl(14, 98%, 50%);
+  --black-color: rgb(20, 20, 20);
+  --black-color-light: hsl(0, 0%, 40%);
+  --white-color: hsl(0, 0%, 95%);
+  --title-color: hsl(0, 0%, 100%);
+  --text-color: hsl(0, 0%, 35%);
+  --text-color-light: hsl(0, 0%, 64%);
+  --body-color: hsl(0, 0%, 87%);
+  --container-color: hsl(0, 0%, 83%);
+
+  /*========== Font and typography ==========*/
+  /*.5rem = 8px | 1rem = 16px ...*/
+  --body-font: font-family: 'dotmatrixtworegular';
+  --even-bigger-font-size: 4.5rem;
+  --biggest-font-size: 2.5rem;
+  --h1-font-size: 1.75rem;
+  --h2-font-size: 1.25rem;
+  --h3-font-size: 1.125rem;
+  --normal-font-size: .938rem;
+  --small-font-size: .813rem;
+  --smaller-font-size: .75rem;
+
+  /*========== Font weight ==========*/
+  --font-regular: 400;
+  --font-medium: 500;
+  --font-semi-bold: 600;
+  --font-bold: 700;
+
+  /*========== z index ==========*/
+  --z-tooltip: 10;
+  --z-fixed: 100;
+}
+/*========== Variables Light theme ==========*/
+body.light-theme{
+    --first-color: hsl(194, 98%, 50%);
+    --black-color: hsl(0, 0%, 95%);
+    --black-color-light: hsl(0, 0%, 40%);
+    --white-color: rgb(20, 20, 20);
+    --title-color: hsl(0, 0%, 100%);
+    --text-color: hsl(0, 0%, 35%);
+    --text-color-light: hsl(0, 0%, 64%);
+    --body-color: hsl(0, 0%, 87%);
+    --container-color: hsl(0, 0%, 83%);
+  }
+
+/*========== Responsive typography ==========*/
+@media screen and (min-width: 1150px) {
+  :root {
+    --even-bigger-font-size: 4.5rem;
+    --biggest-font-size: 2rem;
+    --h1-font-size: 3rem;
+    --h2-font-size: 1.5rem;
+    --h3-font-size: 1.25rem;
+    --normal-font-size: 1rem;
+    --small-font-size: .875rem;
+    --smaller-font-size: .813rem;
+  }
+}
+/*=============== BASE ===============*/
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    scroll-behavior: smooth;
+    cursor: none
+  }
+  
+  html {
+    scroll-behavior: smooth;
+    scroll-snap-type: y mandatory;
+  }
+  
+body {
+    font-family: 'dotmatrixtworegular';
+    font-size: var(--normal-font-size);
+    background-color: var(--black-color);
+    color: var(--text-color);
+    transition: background-color 1s cubic-bezier(0.4, 0, 0.2, 1), color 1s cubic-bezier(0.4, 0, 0.2, 1); /* Adjusted duration and easing function */
+}
+  
+  h1, h2, h3, h4 {
+    color: var(--title-color);
+    font-weight: var(--font-bold);
+  }
+  
+  ul {
+    list-style: none;
+  }
+  
+  a {
+    text-decoration: none;
+  }
+  p1, h5{
+    color: var(--first-color);
+  }
+  section {
+    scroll-snap-align: start;
+}
+  
+  img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    filter: invert(1);
+  }
+  .video-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: -1; /* Put the video behind the content */
+}
+
+#bgVideo {
+    min-width: 175%;
+    min-height: 175%;
+    width: auto;
+    height: auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    filter: brightness(0.8) contrast(1.2); /* Adjust brightness and contrast */
+    opacity: 0.8; /* Set the opacity */
+    border-radius: 10px; /* Add border radius */
+    transition: filter 0.3s ease, opacity 0.3s ease; /* Add transition effect */
+}
+canvas {
+    display: block;
+}
+
+
+
+
+
+/*=============== MOUSE ===============*/
+.cursor {
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+    border: 1px solid var(--black-color-light);
+    transition: all 200ms ease-out;
+    position: fixed;
+    pointer-events: none;
+    left: 0;
+    top: 0;
+    transform: translate(calc(-50% + 15px), -50%);
+    z-index: 9999;
+    
+  }
+  
+  .cursor2 {
+    width: 20px;
+    height: 20px;
+    border-radius: 100%;
+    background-color: var(--first-color);
+    opacity: .3;
+    position: fixed;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    transition: width .3s, height .3s, opacity .3s;
+    z-index: 999;
+  }
+  
+  .hover {
+    background-color: var(--first-color);
+    opacity: 0.5;
+  }
+  
+  .cursorinnerhover {
+    width: 50px;
+    height: 50px;
+    opacity: .5;
+  }
+/*=============== SCROLL BAR ===============*/
+/* Hide the default scrollbar */
+::-webkit-scrollbar {
+    display: none;
+}
+/*=============== SECTIONS ===============*/
+.home,
+.section-1,
+.section-2,
+.section-3 {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.home {
+    height: 100vh; /* Ensure home section takes full viewport height */
+    width: 100%;
+}
+
+.section-1 {
+    height: 100vh; /* Let sections adjust their height based on content */
+}
+
+.section-2 {
+    height: 100vh; /* Let sections adjust their height based on content */
+    
+}
+
+.section-3 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    height: 100vh; /* Let sections adjust their height based on content */
+}
+
+
+/*=============== HOME ===============*/
+.container{
+    text-align: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    color: #fff;
+    mix-blend-mode: difference;
+    width: 700px;
+    text-transform: uppercase; /* Make the text uppercase */
+    letter-spacing: 2px; /* Increase the spacing between letters */
+}
+
+.container h1{
+    font-size: var(--biggest-font-size);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Add a text shadow */
+}
+.home__icons {
+    display: flex;
+    justify-content: center;
+    margin: 1rem;
+    gap: 2rem; /* Increased gap */
+}
+
+.icon {
+    width: 3rem; /* Set width and height for the icons */
+    height: 3rem;
+}
+
+.container h1 {
+    text-align: center; /* Center align the headings */
+    margin-bottom: 0.5rem; /* Add some bottom margin to the headings */
+}
+
+/*=============== WORK ===============*/
+.section-1 {
+    background: var(--black-color); /* Set the background color */
+    display: grid; /* Use grid layout */
+    grid-template-columns: repeat(3, 1fr); /* Define three equal-width columns */
+    grid-gap: 20px; /* Set the gap between grid items */
+    padding: 20px; /* Add padding to the grid container */
+}
+
+.work__container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1rem;
+    padding: 1rem;
+    grid-row: 1; /* Set the grid row */
+    grid-column: 3; /* Set the grid column */
+    align-self: center; /* Align the image vertically in the middle */
+    justify-self: start; /* Align the image horizontally to the start (left) */
+}
+
+.work__container p{
+    color: var(--white-color); /* Set the text color */
+    font-size: var(--even-bigger-font-size); /* Set the font size */
+    margin-top: 0.5rem; /* Add top margin */
+}
+.work__container p1{
+    font-size: var(--even-bigger-font-size); /* Set the font size */
+}
+.work__img {
+    display: flex; /* Make the container a flex container */
+    justify-content: center; /* Center the content horizontally */
+    align-items: center; /* Center the content vertically */
+    grid-row: 1; /* Set the grid row */
+    grid-column: 1; /* Set the grid column */
+}
+/*=============== WORK ===============*/
+.section-2 {
+    background: var(--black-color); /* Set the background color */
+    display: grid; /* Use grid layout */
+    grid-template-columns: 1fr 2fr; /* Define the columns with the first column smaller and the second column wider */
+    grid-gap: 20px; /* Set the gap between grid items */
+    padding: 20px; /* Add padding to the grid container */
+}
+section:nth-of-type(2) {
+    max-height: 100vh;
+    overflow: auto; /* Add this if you want the section to be scrollable when the content exceeds 100vh */
+}
+
+.container__work {
+    background-color: var(--white-color); /* Background color for the section */
+    padding: 50px 25px; /* Adjust padding as needed */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive grid layout */
+    gap: 20px; /* Gap between grid items */
+}
+
+.section-2__content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column; /* Center content vertically */
+}
+
+.section-2__content__right {
+    padding: 20px;
+    border: 1px solid #ccc; /* Example border for visualization */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for background color and text color */
+
+}
+
+.section-2__content__right__header h1 {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--text-color);
+    margin-bottom: 10px; /* Move margin from the parent to the child */
+}
+
+.section-2__content__right__content p {
+    font-size: 16px;
+    color: var(--text-color-light);
+    margin-bottom: 20px; /* Move margin from the parent to the child */
+}
+
+.section-2__content__right:hover{
+    background-color: var(--first-color); /* Change background color on hover */
+    color: var(--white-color); /* Change text color on hover */
+}
+.section-2__content__right:active{
+    background-color: var(--black-color); /* Change background color on active */
+    color: var(--first-color); /* Change text color on active */
+}
+/* ////////// LOADER FOR THE WORK SECTION /////////// */
+.loader {
+    display: grid;
+    place-items: center;
+}
+
+.loader__container {
+    position: relative; /* Set position relative for absolute positioning of images */
+    width: 30rem;
+    height: 30rem;
+}
+
+.loader__container img {
+    position: absolute; /* Set position absolute for stacking */
+    top: 0; /* Position images at the top */
+    left: 0; /* Position images at the left */
+    opacity: 0; /* Hide all images by default */
+    transition: opacity 0.5s ease; /* Smooth transition for opacity */
+}
+
+.loader__container img.active {
+    opacity: 1; /* Show the active image */
+}
+/* ================ WORK SECTIONS ================= */
+
+.work__1,
+.work__2,
+.work__3,
+.work__4 {
+    display: flex; /* Make the container a flex container */
+    justify-content: center; /* Center the content horizontally */
+    align-items: center; /* Center the content vertically */
+    display: none;
+    width: 100%;
+    height: 100%;
+    background-color: var(--white-color);
+}
+.work_container{
+    margin: 10rem;
+}
+.work__1,
+.work__2,
+.work__3,
+.work__4 h2 {
+    font-size: 24px;
+}
+
+.work__1,
+.work__2,
+.work__3,
+.work__4 p {
+    font-size: 16px;
+    line-height: 1.5;
+}
+.work_1_text{
+    padding: 1rem;
+}
+.work__1,
+.work__2,
+.work__3,
+.work__4 ul{
+    padding: 1rem;
+}
+.work__1,
+.work__2,
+.work__3,
+.work__4 ul li{
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+.line {
+    border-top: 1px dashed var(--black-color); /* This creates a dashed line */
+    width: 100%; /* This makes the line span the full width of its container */
+    height: 0; /* This ensures that the div is only as tall as the line */
+    margin: 1rem 0; /* This adds some space above and below the line */
+}
+.work__info h2{
+    font-size: 2rem;
+    text-align: center;
+    margin: 1rem;
+    color: var(--first-color);  
+}
+.work__info ul{
+    margin: 1rem;
+}
+.work__1 ul li::before{
+    content: "•";
+    color: var(--first-color);
+    display: inline-block;
+    width: 1em;
+    margin-left: -1em;
+}
+.work__2 ul li::before{
+    content: "•";
+    color: var(--first-color);
+    display: inline-block;
+    width: 1em;
+    margin-left: -1em;
+}
+.work__3 ul li::before{
+    content: "•";
+    color: var(--first-color);
+    display: inline-block;
+    width: 1em;
+    margin-left: -1em;
+}
+.work__4 ul li::before{
+    content: "•";
+    color: var(--first-color);
+    display: inline-block;
+    width: 1em;
+    margin-left: -1em;
+}
+.extra__info{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin: 3rem;
+}
+.extra__work__btn{
+    padding: 1rem;
+    border: 1px solid var(--first-color);
+    border-radius: 5px;
+    color: var(--first-color);
+    background-color: var(--white-color);
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for background color and text color */
+    height: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.extra__work__btn:hover{
+    background-color: var(--first-color); /* Change background color on hover */
+    color: var(--black-color); /* Change text color on hover */
+}
+/*=============== SKILLS ===============*/
+/* Style for skill wrapper */
+.skill_wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Align items to the top */
+    flex-wrap: wrap; /* Allow cards to wrap */
+    max-width: 1400px; /* Set maximum width for the wrapper */
+    margin: 0 auto; /* Center the wrapper horizontally */
+}
+
+
+/* Style for individual card */
+.card {
+    margin: 10px; /* Add margin between cards */
+}
+
+
+
+
+/* Style for individual card */
+.card {
+    position: relative; /* Make it relative to enable absolute positioning of overlay */
+    width: 300px; /* Adjust card width as needed */
+    height: 500px; /* Adjust card height as needed */
+    background-color: var(--first-color); /* Background color of the card */
+    border-radius: 10px; /* Rounded corners for the card */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Box shadow for card */
+    overflow: hidden; /* Hide overflowing content */
+    display: flex; /* Use flexbox */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+}
+
+
+/* Style for card icon */
+.card__icon {
+    display: flex; /* Use flexbox */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    width: 100px;
+    height: 100px;
+}
+
+
+
+
+/* Style for card content */
+.card__content {
+    padding: 20px;
+    text-align: center; /* Center align the content */
+    border-radius: 10px; /* Rounded corners for the card */
+
+}
+
+/* Style for card heading */
+.card__content h3 {
+    font-size: var(--h2-font-size);
+    margin-bottom: 10px;
+    color: var(--first-color); /* Heading color */
+}
+
+/* Style for list */
+.card__content ul {
+    list-style-type: none;
+    padding-top: 1rem;
+    margin: 0;
+    border-radius: 10px;
+
+}
+
+/* Style for list items */
+.card__content ul li {
+    margin-bottom: 5px;
+    font-size: var(--h3-font-size);
+}
+.card__content ul li::before{
+    content: "•";
+    color: var(--first-color);
+    display: inline-block;
+    width: 1em;
+    margin-left: -1em;
+
+}
+
+
+/* Style for overlay */
+.card:hover .overlay {
+    opacity: 1; /* Make overlay visible */
+}
+
+
+
+/* Style for revealing content */
+.card__content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--white-color); /* Semi-transparent white */
+    opacity: 0; /* Initially hidden */
+    transition: opacity 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
+    transform: scale(0.95); /* Initial scale for animation */
+    transform-origin: center; /* Set transform origin to center */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Subtle shadow effect */
+}
+
+/* Show overlay on hover */
+.card:hover .card__content {
+    opacity: 1; /* Make overlay visible */
+    transform: scale(1); /* Scale up on hover */
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); /* Increase shadow on hover */
+}
+
+/* Animation keyframes */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
